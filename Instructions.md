@@ -50,14 +50,17 @@ mkdir -pv initramfs/x86-busybox/{bin,dev,sbin,etc,proc,sys/kernel/debug,usr/{bin
 cp -av build-busybox/_install/* initramfs/x86-busybox/.
 cp -av /dev/{null,console,tty,sda1} initramfs/x86-busybox/dev/.
 ```
-Creating a init shell script,which willrun at startup - 
+Creating a init shell script, write following content in initramfs/x86-busybox/init file (you can use any editor) - 
 ```
-echo "#!/bin/sh \
-mount -t proc none /proc \
-mount -t sysfs none /sys \
-mount -t debugfs none /sys/kernel/debug " >> initramfs/x86-busybox/init
-echo -e "\nBoot took $(cut -d' ' -f1 /proc/uptime) seconds\n" >> initramfs/x86-busybox/init
-echo "exec /bin/sh" >> initramfs/x86-busybox/init 
+#!/bin/sh
+ 
+mount -t proc none /proc
+mount -t sysfs none /sys
+mount -t debugfs none /sys/kernel/debug
+ 
+echo -e "\nBoot took $(cut -d' ' -f1 /proc/uptime) seconds\n"
+ 
+exec /bin/sh
 ```
 Giving executable permission to init shell 
 ```
